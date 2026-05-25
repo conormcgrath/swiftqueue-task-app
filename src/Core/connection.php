@@ -3,8 +3,10 @@
 $config  = require __DIR__ . '/../../config/database.php';
 
 try {
+    
+    $databasePath = $config['sqlite']['database'];
 
-    $pdo = new PDO('sqlite:' . $config['sqlite']['database']);
+    $pdo = new PDO('sqlite:' . $databasePath);
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
