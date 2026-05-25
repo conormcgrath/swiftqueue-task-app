@@ -7,6 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <title>Tasks</title>
 </head>
 
@@ -23,64 +25,80 @@
         <p>No tasks found.</p>
 
     <?php else: ?>
+        <div x-data="{ filter: 'all' }">
 
-        <table>
+            <div style="margin-bottom:20px;">
 
-            <thead>
+                <label for="filter">
+                    Filter Tasks:
+                </label>
 
-                <tr>
-                    <th>Name</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                </tr>
+                <select id="filter" x-model="filter">
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                </select>
 
-            </thead>
+            </div>
 
-            <tbody>
+            <table>
 
-            <?php foreach ($tasks as $task): ?>
+                <thead>
 
-                <tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                    </tr>
 
-                    <td>
-                        <?= $task['name'] ?>
-                    </td>
+                </thead>
 
-                    <td>
-                        <?= $task['due_date'] ?>
-                    </td>
+                <tbody>
 
-                    <td>
-                        <?= $task['status'] ?>
-                    </td>
+                <?php foreach ($tasks as $task): ?>
 
-                    <td>
-                        <a href="/tasks/update?id=<?= $task['id'] ?>">Edit</a>
+                    <tr x-show="filter === 'all' || filter === '<?= $task['status'] ?>'">
 
-                        <form 
-                            method="POST" 
-                            action="/tasks/delete" 
-                            style="display:inline;"
-                            onsubmit="return confirm('Are you sure you want to delete this task?');">
-                            <input 
-                                type="hidden" 
-                                name="id" 
-                                value="<?= htmlspecialchars($task['id']) ?>"
-                            >
+                        <td>
+                            <?= $task['name'] ?>
+                        </td>
 
-                            <button type="submit">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
+                        <td>
+                            <?= $task['due_date'] ?>
+                        </td>
 
-                </tr>
+                        <td>
+                            <?= $task['status'] ?>
+                        </td>
 
-            <?php endforeach; ?>
+                        <td>
+                            <a href="/tasks/update?id=<?= $task['id'] ?>">Edit</a>
 
-            </tbody>
+                            <form 
+                                method="POST" 
+                                action="/tasks/delete" 
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                <input 
+                                    type="hidden" 
+                                    name="id" 
+                                    value="<?= htmlspecialchars($task['id']) ?>"
+                                >
 
-        </table>
+                                <button type="submit">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+
+                    </tr>
+
+                <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
+        </div>
 
     <?php endif; ?>
 
