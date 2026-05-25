@@ -11,6 +11,8 @@
 </head>
 
 <body>
+
+<a href="/logout">Log out</a>
     
 <h2>Tasks</h2>
     
@@ -48,6 +50,26 @@
 
                     <td>
                         <?= $task['status'] ?>
+                    </td>
+
+                    <td>
+                        <a href="/tasks/update?id=<?= $task['id'] ?>">Edit</a>
+
+                        <form 
+                            method="POST" 
+                            action="/tasks/delete" 
+                            style="display:inline;"
+                            onsubmit="return confirm('Are you sure you want to delete this task?');">
+                            <input 
+                                type="hidden" 
+                                name="id" 
+                                value="<?= htmlspecialchars($task['id']) ?>"
+                            >
+
+                            <button type="submit">
+                                Delete
+                            </button>
+                        </form>
                     </td>
 
                 </tr>
