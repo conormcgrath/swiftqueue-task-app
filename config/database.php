@@ -1,6 +1,8 @@
+<?php 
+
 return [
-    'host' => 'localhost',
-    'dbname' => 'swiftqueue',
-    'username' => 'root',
-    'password' => ''
+    'driver' => 'sqlite',
+    'sqlite' => [
+        'database' => __DIR__ . '/../database/database.sqlite'
+    ]
 ];
