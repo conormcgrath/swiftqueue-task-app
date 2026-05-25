@@ -15,7 +15,9 @@
 <a href="/logout">Log out</a>
     
 <h2>Tasks</h2>
-    
+
+    <a href="/tasks/create">Create Task</a>
+
     <?php if (empty($tasks)): ?>
 
         <p>No tasks found.</p>
