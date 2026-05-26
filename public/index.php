@@ -4,11 +4,13 @@ session_start();
 require_once __DIR__ . '/../src/Controllers/AuthController.php';
 require_once __DIR__ . '/../src/Controllers/TaskController.php';
 
+// Create CSRF token
 if (empty($_SESSION['csrf_token'])) 
 {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+// Site routing structure
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 if ($uri === '/' || $uri === '/login') 

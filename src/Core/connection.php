@@ -1,5 +1,7 @@
 <?php
 
+// Database configuration settings
+
 $config  = require __DIR__ . '/../../config/database.php';
 
 try {

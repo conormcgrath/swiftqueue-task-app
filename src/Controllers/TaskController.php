@@ -2,10 +2,12 @@
 
 require_once __DIR__ . '/AuthController.php';
 
+// Controller for task CRUD operations.
 class TaskController 
 {
     private PDO $pdo;
 
+    // Load PDO database connection
     public function __construct()
     {
         $this->pdo = require __DIR__ . '/../Core/connection.php';
@@ -13,10 +15,12 @@ class TaskController
 
     public function index(): void
     {
+        // Ensures only authenticated users can access
         AuthController::check();
 
         $user_id = $_SESSION['user_id'];
 
+        // Retrieve authenticated user tasks
         $stmt = $this->pdo->prepare("
                 SELECT *
                 FROM tasks
@@ -35,10 +39,12 @@ class TaskController
 
     public function create(): void
     {
+        // Ensures only authenticated users can access
         AuthController::check();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+            // Verify CSRF token before processing POST request
             AuthController::verifyCsrf();
 
             $user_id = $_SESSION['user_id'];
@@ -47,6 +53,7 @@ class TaskController
             $due_date = $_POST['due_date'];
             $status = $_POST['status'];
 
+            // Form fields validation check
             if ($name === '' || $due_date === '' || !in_array($status, ['active', 'completed'])) {
                 $_SESSION['error'] = 'Please complete all fields.';
 
@@ -54,6 +61,7 @@ class TaskController
                 exit;
             }
 
+            // Store task for authenticated user.
             $stmt = $this->pdo->prepare("
                 INSERT INTO tasks (name, due_date, status, user_id)
                 VALUES (:name, :due_date, :status, :user_id)
@@ -75,6 +83,7 @@ class TaskController
 
     public function update(): void
     {
+        // Ensures only authenticated users can access
         AuthController::check();
 
         $id = $_GET['id'] ?? $_POST['id'] ?? null;
@@ -88,14 +97,17 @@ class TaskController
             exit;
         }
 
+        // Process task creation
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+            // Verify CSRF token before processing POST request
             AuthController::verifyCsrf();
 
             $name = $_POST['name'];
             $due_date = $_POST['due_date'];
             $status = $_POST['status'];
             
+            // Form fields validation check
             if($name === '' || $due_date === '' || !in_array($status, ['active', 'completed'])) 
             {
                 $_SESSION['error'] = 'Please complete all fields';
@@ -104,6 +116,7 @@ class TaskController
                 exit;
             }
 
+            // Update task for authenticated user.
             $stmt = $this->pdo->prepare("
                 UPDATE tasks
                 SET
@@ -155,14 +168,18 @@ class TaskController
 
     public function delete(): void
     {
+        // Ensures only authenticated users can access
         AuthController::check();
 
+        // Verify CSRF token before processing POST request
         AuthController::verifyCsrf();
         
         $id = $_POST['id'];
         $user_id = $_SESSION['user_id'];
 
         if ($id) {
+
+            // Delete task for authenticated user.
             $stmt = $this->pdo->prepare("
                 DELETE FROM tasks
                 WHERE id = :id

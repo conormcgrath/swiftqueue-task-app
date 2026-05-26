@@ -1,9 +1,11 @@
 <?php
 
+// Controller for user authentication and session management
 class AuthController
 {
     private PDO $pdo;
 
+    // Load PDO database connection
     public function __construct()
     {
         $this->pdo = require __DIR__ . '/../Core/connection.php';
@@ -16,12 +18,14 @@ class AuthController
 
     public function login(): void
     {
+        // Verify CSRF token before processing POST request
         AuthController::verifyCsrf();
 
         $email = $_POST['email'];
 
         $password = $_POST['password'];
         
+        // Find user account using submitted email address
         $stmt = $this->pdo->prepare("
             SELECT * FROM users
             WHERE email = :email
@@ -34,6 +38,7 @@ class AuthController
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        // User and password validation check
         if (!$user || !password_verify($password, $user['password'])) {
             $_SESSION['error'] = 'Invalid email or password.';
 
@@ -51,6 +56,7 @@ class AuthController
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+            // Verify CSRF token before processing POST request
             AuthController::verifyCsrf();
 
             $name = $_POST['name'];
@@ -58,6 +64,7 @@ class AuthController
             $password = $_POST['password'];
             $confirm_password = $_POST['confirm_password'];
 
+            // Form fields validation check
             if( $name === '' || $email === '' || $password === '' || $confirm_password === '') 
             {
                 $_SESSION['error'] = 'All fields are required.';
@@ -66,6 +73,7 @@ class AuthController
                 exit;
             }
 
+            // Check email address formatting
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)) 
             {
                 $_SESSION['error'] = 'Invalid email address.';
@@ -74,6 +82,7 @@ class AuthController
                 exit;
             }
 
+            // Password check
             if($password !== $confirm_password) 
             {
                 $_SESSION['error'] = 'Passwords do not match.';
@@ -82,6 +91,7 @@ class AuthController
                 exit;
             }
 
+            // Check if there is an existing user with the same credentials
             $stmt = $this->pdo->prepare("
                 SELECT id
                 FROM users
@@ -105,6 +115,7 @@ class AuthController
 
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+            // Create new user
             $stmt = $this->pdo->prepare("
                 INSERT INTO users (
                     name,
@@ -149,6 +160,7 @@ class AuthController
 
     public static function check(): void
     {
+        // Check if user has been authenticated
         if (!isset($_SESSION['user_id'])) {
 
             header('Location: /login');
@@ -158,6 +170,7 @@ class AuthController
 
     public static function verifyCsrf(): void
     {
+        // CSRF token validation check
         if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
             !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']))
         {
