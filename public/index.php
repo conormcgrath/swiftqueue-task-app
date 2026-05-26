@@ -6,7 +6,7 @@ require_once __DIR__ . '/../src/Controllers/TaskController.php';
 
 if (empty($_SESSION['csrf_token'])) 
 {
-    $_SESSION['csrf_token'] = md5(uniqid(mt_rand(), true));
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -24,6 +24,15 @@ if ($uri === '/' || $uri === '/login')
     {
         $controller->showLogin();
     }
+
+    exit;
+}
+
+if ($uri === '/register') {
+
+    $controller = new AuthController();
+
+    $controller->register();
 
     exit;
 }

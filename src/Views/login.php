@@ -16,7 +16,11 @@
 
     <div class="container mt-5">
         
-        <h2 class="mb-4">Task Manager Login</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Task Manager Login</h2>
+
+            <a href="/register" class="btn btn-outline-secondary btn-sm">Register</a>
+        </div>
             
         <form method="POST" action="/login">
 
