@@ -19,6 +19,8 @@
         <h2 class="mb-4">Task Manager Login</h2>
             
         <form method="POST" action="/login">
+
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             
             <div class="mb-3">
                 <label for="email" class="form-label">Email Address:</label>

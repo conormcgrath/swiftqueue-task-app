@@ -4,6 +4,11 @@ session_start();
 require_once __DIR__ . '/../src/Controllers/AuthController.php';
 require_once __DIR__ . '/../src/Controllers/TaskController.php';
 
+if (empty($_SESSION['csrf_token'])) 
+{
+    $_SESSION['csrf_token'] = md5(uniqid(mt_rand(), true));
+}
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 if ($uri === '/' || $uri === '/login') 

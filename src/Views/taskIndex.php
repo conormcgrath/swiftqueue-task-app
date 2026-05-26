@@ -92,12 +92,12 @@
                                     <input 
                                         type="hidden" 
                                         name="id" 
-                                        value="<?= htmlspecialchars($task['id']) ?>"
+                                        value="<?= $task['id'] ?>"
                                     >
 
-                                    <button class="btn btn-sm btn-danger" type="submit">
-                                        Delete
-                                    </button>
+                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                                 </form>
                             </td>
 

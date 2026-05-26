@@ -32,6 +32,8 @@ unset($_SESSION['error']);
 
     <form method="POST" action="/tasks/update">
 
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
         <input type="hidden" name="id" value="<?= $task['id'] ?>">
 
         <div class="mb-3">

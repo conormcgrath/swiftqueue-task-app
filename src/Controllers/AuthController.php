@@ -16,6 +16,8 @@ class AuthController
 
     public function login(): void
     {
+        AuthController::verifyCsrf();
+
         $email = $_POST['email'];
 
         $password = $_POST['password'];
@@ -58,6 +60,15 @@ class AuthController
 
             header('Location: /login');
             exit;
+        }
+    }
+
+    public static function verifyCsrf(): void
+    {
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']))
+        {
+            die('Invalid CSRF token');
         }
     }
 }

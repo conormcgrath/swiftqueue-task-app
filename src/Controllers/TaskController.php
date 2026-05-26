@@ -39,6 +39,8 @@ class TaskController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+            AuthController::verifyCsrf();
+
             $user_id = $_SESSION['user_id'];
 
             $name = $_POST['name'];
@@ -86,6 +88,7 @@ class TaskController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') 
         {
+            AuthController::verifyCsrf();
 
             $name = $_POST['name'];
             $due_date = $_POST['due_date'];
@@ -152,6 +155,8 @@ class TaskController
     public function delete(): void
     {
         AuthController::check();
+
+        AuthController::verifyCsrf();
         
         $id = $_POST['id'];
         $user_id = $_SESSION['user_id'];
