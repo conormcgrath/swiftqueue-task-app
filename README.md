@@ -43,7 +43,7 @@ The application allows authenticated users to:
 
 # Setup Instructions
 
-# 1. Clone Repository
+## 1. Clone Repository
 
 git clone https://github.com/conormcgrath/swiftqueue-task-app.git
 
