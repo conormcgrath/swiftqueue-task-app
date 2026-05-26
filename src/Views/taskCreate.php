@@ -22,10 +22,15 @@
         <a href="/tasks" class="btn btn-outline-secondary btn-sm">Tasks</a>
     </div>
 		
+	<?php if (!empty($_SESSION['error'])): ?>
+		<div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+		<?php unset($_SESSION['error']); ?>
+	<?php endif; ?>
+
 	<form method="POST" action="/tasks/create">
 
 		<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-		
+
 		<div class="mb-3">
 			<label for="name" class="form-label">Task Name</label><br>
 			<input type="text" id="name" name="name" class="form-control" required>

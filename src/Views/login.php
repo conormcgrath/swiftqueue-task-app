@@ -21,6 +21,11 @@
 
             <a href="/register" class="btn btn-outline-secondary btn-sm">Register</a>
         </div>
+
+        <?php if (!empty($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
             
         <form method="POST" action="/login">
 

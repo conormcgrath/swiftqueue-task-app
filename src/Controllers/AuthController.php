@@ -35,7 +35,9 @@ class AuthController
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!$user || !password_verify($password, $user['password'])) {
-            echo "Invalid email or password.";
+            $_SESSION['error'] = 'Invalid email or password.';
+
+            header('Location: /login');
             exit;
         }
 

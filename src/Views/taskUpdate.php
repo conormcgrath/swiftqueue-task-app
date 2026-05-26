@@ -13,11 +13,6 @@
 </head>
 
 <body class="bg-light">
-
-<?php
-$error = $_SESSION['error'] ?? null;
-unset($_SESSION['error']);
-?>
   
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -26,8 +21,9 @@ unset($_SESSION['error']);
         <a href="/tasks" class="btn btn-outline-secondary btn-sm">Back</a>
     </div>
     
-    <?php if ($error): ?>
-        <p style="color: red;"><?= $error ?></p>
+    <?php if (!empty($_SESSION['error'])): ?>
+        <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+        <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
     <form method="POST" action="/tasks/update">

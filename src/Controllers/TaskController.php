@@ -49,6 +49,7 @@ class TaskController
 
             if ($name === '' || $due_date === '' || !in_array($status, ['active', 'completed'])) {
                 $_SESSION['error'] = 'Please complete all fields.';
+
                 header('Location: /tasks/create');
                 exit;
             }
@@ -82,6 +83,7 @@ class TaskController
         if (!$id) 
         {
             $_SESSION['error'] = 'Task ID is required.';
+
             header('Location: /tasks');
             exit;
         }
@@ -98,11 +100,10 @@ class TaskController
             {
                 $_SESSION['error'] = 'Please complete all fields';
 
-                header('Location: /tasks/edit?id=' . $id);
+                header('Location: /tasks/update?id=' . $id);
                 exit;
             }
 
-            // Update task
             $stmt = $this->pdo->prepare("
                 UPDATE tasks
                 SET
